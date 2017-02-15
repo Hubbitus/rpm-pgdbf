@@ -1,6 +1,6 @@
 Name:           pgdbf
 Version:        0.6.2
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Convert XBase / FoxPro databases to PostgreSQL
 
 License:        GPLv3+
@@ -29,13 +29,14 @@ aclocal
 autoheader
 automake --force-missing --add-missing
 autoconf
-%configure
+%configure --docdir=%{_pkgdocdir}
 %make_build
-
 
 %install
 %make_install
 
+# Remove installed documentation (unversioned dir)
+rm -rvf %{buildroot}%{_pkgdocdir}
 
 %files
 %license COPYING
@@ -44,5 +45,8 @@ autoconf
 %{_mandir}/man1/%{name}.1.gz
 
 %changelog
+* Wed Feb 15 2017 Pavel Alexeev <Pahan@Hubbitus.info> - 0.6.2-2
+- Remove installed in Makefile documentation to work correctly on epel7 where doc dir still versioned.
+
 * Tue Feb  7 2017 Pavel Alexeev (aka Pahan-Hubbitus) <Pahan@Hubbitus.info> - 0.6.2-1
 - Initial spec
